@@ -52,7 +52,12 @@ export const verifyOTP = async (formData) => {
       headers: { Authorization: `Bearer ${otpToken}` },
     });
     const data = res.data;
+    
+    // Store user data in localStorage
     localStorage.setItem("token", data.token);
+    localStorage.setItem("username", data.user.username);
+    localStorage.setItem("email", data.user.email);
+    
     return {
       status: res.status,
       message: data.message,

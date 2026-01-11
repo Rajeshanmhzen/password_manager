@@ -13,29 +13,45 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-const data = {
-  user: {
-    name: localStorage.getItem("username") || "Username",
-    email: localStorage.getItem("email") || "Email",
-    avatar: "",
-  },
-  passwords: [
-    {
-      name: "All Passwords",
-      url: "/dashboard",
-      icon: KeyRound,
-    },
-  ],
-    account: [
-    {
-      name: "Settings",
-      url: `/dashboard?tab=Settings`,
-      icon: Settings,
-    },
-  ],
-};
-
 export function AppSidebar({ ...props }) {
+  const [userData, setUserData] = React.useState({
+    name: "Username",
+    email: "Email",
+    avatar: "",
+  });
+
+  React.useEffect(() => {
+    // Get user data from localStorage
+    const username = localStorage.getItem("username");
+    const email = localStorage.getItem("email");
+    
+    if (username && email) {
+      setUserData({
+        name: username,
+        email: email,
+        avatar: "",
+      });
+    }
+  }, []);
+
+  const data = {
+    user: userData,
+    passwords: [
+      {
+        name: "All Passwords",
+        url: "/dashboard",
+        icon: KeyRound,
+      },
+    ],
+    account: [
+      {
+        name: "Settings",
+        url: `/dashboard?tab=Settings`,
+        icon: Settings,
+      },
+    ],
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarContent>

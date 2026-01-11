@@ -3,6 +3,7 @@ const { hashPassword, comparePassword, generateToken } = require("../utils/authU
 const randomize = require("randomatic");
 const { sendOTP } = require("../services/mailService");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 
 // REGISTER
 exports.register = async (req, res) => {
@@ -64,7 +65,7 @@ exports.login = async (req, res) => {
     // Generate OTP
     const otp = randomize("0", 6);
     user.otp = otp;
-    user.otpExpiresIn = Date.now() + 60000; // 1 min
+    user.otpExpiresIn = Date.now() + 60000; 
     await user.save();
 
     sendOTP(email, otp);
@@ -87,19 +88,31 @@ exports.verifyOTP = async (req, res) => {
     const { otp } = req.body;
     if (!otp) return res.status(400).json({ message: "OTP required" });
 
-    const user = await Users.findOne({ otp });
-    if (!user || user.otpExpiresIn < Date.now())
+    // Get user ID from JWT token
+    const token = req.headers["authorization"]?.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    const user = await Users.findById(decoded.id);
+    if (!user) return res.status(400).json({ message: "User not found" });
+    
+    // Check if OTP matches and is not expired
+    if (user.otp !== otp || user.otpExpiresIn < Date.now())
       return res.status(400).json({ message: "Invalid or expired OTP" });
 
     user.otp = null;
     user.otpExpiresIn = null;
     await user.save();
 
-    const token = generateToken({ id: user._id });
+    const newToken = generateToken({ id: user._id });
 
     res.status(200).json({
       message: "Login successful",
-      token,
+      token: newToken,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email
+      }
     });
   } catch (err) {
     console.error(err);
