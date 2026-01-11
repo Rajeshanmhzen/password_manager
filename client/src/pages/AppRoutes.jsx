@@ -13,7 +13,6 @@ export default function AppRoutes() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -21,6 +20,7 @@ export default function AppRoutes() {
             path="/dashboard"
             element={<ProtectedRoute route={<Dashboard />} />}
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
