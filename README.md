@@ -8,7 +8,7 @@
 </div>
 
 <div align="center">
-  <h3>🌐 <a href="https://app-62zq.onrender.com/">Live Demo</a></h3>
+  <h3>🌐 <a href="https://password-manager-22du.onrender.com/">Live Demo</a></h3>
   <p>A secure, full-stack password management application with enterprise-grade encryption</p>
 </div>
 
