@@ -11,10 +11,10 @@ export default function NotFound() {
         <h1 className="text-7xl leading-tight tracking-tight text-muted-foreground">
           404
         </h1>
-        <p className="text-muted-foreground mb-6">Stránka nenalezena</p>
+        <p className="text-muted-foreground mb-6">Page not found</p>
         <Link to="/">
           <Button variant="outline">
-            <p>Zpět na hlavní stránku</p>
+            <p>Back to home page</p>
             <ArrowUpRight />
           </Button>
         </Link>
