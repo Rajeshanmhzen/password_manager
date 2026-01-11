@@ -26,7 +26,7 @@ app.use(logger("dev"));
 
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env.FRONTEND_URL || "https://app-62zq.onrender.com",
+  "https://password-manager-22du.onrender.com",
 ];
 app.use(
   cors({
