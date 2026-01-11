@@ -13,14 +13,10 @@ dotenv.config();
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const passwordsRouter = require("./routes/passwords");
+const { default: connectDB } = require("./config/db");
 
 const app = express();
 
-// connecting to database
-mongoose
-  .connect(process.env.DB_KEY)
-  .then(() => console.log(` Connected to database`))
-  .catch((e) => console.error(e));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -66,6 +62,13 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
+});
+const PORT = process.env.PORT || 5000;
+
+connectDB().then(() => {
+  app.listen(PORT,()=> {
+    console.log(`Server is running on port ${PORT}`);
+  })
 });
 
 module.exports = app;
